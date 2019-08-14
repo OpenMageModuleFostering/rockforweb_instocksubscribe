@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * RockForWeb
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category RockForWeb Mod
+ * @package Rockforweb_Instocksubscribe
+ * @author RockForWeb Core Team
+ * @copyright Copyright (c) 2014 RockForWeb (http://www.rockforweb.com)
+ * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
+-->
+<config>
+    <modules>
+        <Rockforweb_Instocksubscribe>
+            <version>1.0.0</version>
+        </Rockforweb_Instocksubscribe>
+    </modules>
+    <global>
+        <models>
+            <instocksubscribe>
+                <class>Rockforweb_Instocksubscribe_Model</class>
+                <resourceModel>instocksubscribe_mysql4</resourceModel>
+            </instocksubscribe>
+            <instocksubscribe_mysql4>
+                <class>Rockforweb_Instocksubscribe_Model_Mysql4</class>
+                <entities>
+                    <instocksubscribe>
+                        <table>instocksubscribe</table>
+                    </instocksubscribe>
+                </entities>
+            </instocksubscribe_mysql4>
+        </models>
+        <resources>
+            <instocksubscribe_setup>
+                <setup>
+                    <module>Rockforweb_Instocksubscribe</module>
+                    <class>Mage_Core_Model_Resource_Setup</class>
+                </setup>
+            </instocksubscribe_setup>
+        </resources>
+        <helpers>
+            <instocksubscribe>
+                <class>Rockforweb_Instocksubscribe_Helper</class>
+            </instocksubscribe>
+        </helpers>
+        <blocks>
+            <instocksubscribe>
+                <class>Rockforweb_Instocksubscribe_Block</class>
+            </instocksubscribe>
+        </blocks>
+        <events>
+            <catalog_product_save_before>
+                <observers>
+                    <instocksubscribe_observer>
+                        <type>singleton</type>
+                        <class>Rockforweb_Instocksubscribe_Model_Observer</class>
+                        <method>notification</method>
+                    </instocksubscribe_observer>
+                </observers>
+            </catalog_product_save_before>
+        </events>
+    </global>
+    <admin>
+        <routers>
+            <instocksubscribe>
+                <use>admin</use>
+                <args>
+                    <module>Rockforweb_Instocksubscribe</module>
+                    <frontName>instocksubscribe</frontName>
+                </args>
+            </instocksubscribe>
+        </routers>
+    </admin>
+    <adminhtml>
+        <translate>
+            <modules>
+                <instocksubscribe>
+                    <files>
+                        <default>Rockforweb_Instocksubscribe_Admin.csv</default>
+                    </files>
+                </instocksubscribe>
+            </modules>
+        </translate>
+    </adminhtml>
+    <frontend>
+        <translate>
+            <modules>
+                <instocksubscribe>
+                    <files>
+                        <default>Rockforweb_Instocksubscribe.csv</default>
+                    </files>
+                </instocksubscribe>
+            </modules>
+        </translate>
+        <routers>
+            <instocksubscribe>
+                <use>standard</use>
+                <args>
+                    <module>Rockforweb_Instocksubscribe</module>
+                    <frontName>instocksubscribe</frontName>
+                </args>
+            </instocksubscribe>
+        </routers>
+        <layout>
+            <updates>
+                <instocksubscribe>
+                    <file>instocksubscribe.xml</file>
+                </instocksubscribe>
+            </updates>
+        </layout>
+    </frontend>
+</config>

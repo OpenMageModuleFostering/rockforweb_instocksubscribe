@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!--
+/**
+* RockForWeb
+*
+* NOTICE OF LICENSE
+*
+* This source file is subject to the Open Software License (OSL 3.0)
+* that is bundled with this package in the file LICENSE.txt.
+* It is also available through the world-wide-web at this URL:
+* http://opensource.org/licenses/osl-3.0.php
+* If you did not receive a copy of the license and are unable to
+* obtain it through the world-wide-web, please send an email
+* to license@magentocommerce.com so we can send you a copy immediately.
+*
+* @category RockForWeb Mod
+* @package Rockforweb_Instocksubscribe
+* @author RockForWeb Core Team
+* @copyright Copyright (c) 2014 RockForWeb (http://www.rockforweb.com)
+* @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+*/
+-->
+<layout version="0.1.0">
+    <catalog_product_view>
+        <reference name="content">
+            <block type="core/template" name="product.notification" as="product_notification" template="rockforweb/instocksubscribe/product_page_form.phtml" before="-" />
+        </reference>
+    </catalog_product_view>
+    <customer_account>
+        <reference name="customer_account_navigation">
+            <action method="addLink" translate="label" module="instocksubscribe"><name>instocksubscribe</name><path>instocksubscribe/index/showAll</path><label>In Stock Notifications</label></action>
+        </reference>
+    </customer_account>
+    <instocksubscribe_index_showall>
+        <update handle="customer_account"/>
+        <reference name="my.account.wrapper">
+            <block type="instocksubscribe/instocksubscribe" name="all.notifications" as="all_notifications" template="rockforweb/instocksubscribe/all_notifications.phtml" />
+        </reference>
+        <reference name="root">
+            <action method="setHeaderTitle" translate="title" module="instocksubscribe"><title>In Stock Notifications</title></action>
+        </reference>
+    </instocksubscribe_index_showall>
+</layout>

@@ -1,0 +1,65 @@
+<?php
+/**
+ * RockForWeb
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category RockForWeb Mod
+ * @package Rockforweb_Instocksubscribe
+ * @author RockForWeb Core Team
+ * @copyright Copyright (c) 2014 RockForWeb (http://www.rockforweb.com)
+ * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
+?>
+<?php require_once 'app/Mage.php';
+$notLoggedInAllow = Mage::getStoreConfig('instocksubscribe/instocksubscribe_group/logged_in');
+
+umask(0);
+Mage::app('default');
+Mage::getSingleton('core/session', array('name' => 'frontend'));
+$sessionCustomer = Mage::getSingleton("customer/session");
+$customerData = $sessionCustomer->isLoggedIn();
+$_product = Mage::registry('current_product');
+$stock = Mage::getModel('cataloginventory/stock_item')->loadByProduct($_product->getId())->getIsInStock();
+if($notLoggedInAllow == 1 && $customerData == false && $stock == false || $notLoggedInAllow == 0 && $customerData == true && $stock == false || $notLoggedInAllow == 1 && $customerData == true && $stock == false): ?>
+    <div class="col3-set">
+        <div class="col-1">
+            <form onsubmit="return submitForm()" id="productSubscribe" action="<?php echo $this->getUrl('instocksubscribe/index/save') ?>" method="post" name="productStatusSubscribe">
+                <ul class="form-list">
+                    <li>
+                        <label class="required" for="subscribeEmail"><em>*</em><?php echo $this->__("Notify me when product is in stock"); ?></label>
+                        <div class="input-box">
+                            <input onfocus="subscribeFocus(this);" onblur="subscribeBlur(this);" type="email" title="Email Address" class="input-text required-entry subscribeEmail" value="<?php echo $this->__("type email here"); ?>" name="subscribeEmail">
+                        </div>
+                        <button name="subscribe" title="Notify me" class="button" type="submit"><span><span><?php echo $this->__('Notify me') ?></span></span></button>
+                    </li>
+                </ul>
+                <input type="hidden" name="sku" value="<?php echo $_product->getSku();?>" />
+            </form>
+        </div>
+    </div>
+<?php endif; ?>
+<script>
+    var customForm = new VarienForm('productSubscribe');
+    function subscribeFocus(e) {
+        if (e.value == "<?php echo $this->__('type email here') ?>") {
+            e.value = '';
+        }
+    }
+    function subscribeBlur(w) {
+        if (w.value == '') {
+            w.value = "<?php echo $this->__('type email here') ?>";
+        }
+    }
+    Validation.add('subscribeEmail', false, function(v) {
+        return Validation.get('IsEmpty').test(v) || /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/i.test(v)
+    });
+</script>

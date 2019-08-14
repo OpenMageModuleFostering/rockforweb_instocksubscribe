@@ -1,0 +1,57 @@
+<?php
+/**
+ * RockForWeb
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category RockForWeb Mod
+ * @package Rockforweb_Instocksubscribe
+ * @author RockForWeb Core Team
+ * @copyright Copyright (c) 2014 RockForWeb (http://www.rockforweb.com)
+ * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
+?>
+<?php echo $this->getMessagesBlock()->getGroupedHtml(); ?>
+<?php $collection = $this->getCollection(); ?>
+<?php echo $this->getPagerHtml(); ?>
+    <ol class="products-list" id="products-list">
+    <?php foreach ($collection as $product) {
+        $_product = Mage::getModel('catalog/product')->loadByAttribute('sku', $product->getSku()); ?>
+        <li class="item<?php if( ++$_iterator == sizeof($_productCollection) ): ?> last<?php endif; ?>">
+            <?php // Product Image ?>
+            <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(135); ?>" width="135" height="135" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /></a>
+            <?php // Product description ?>
+            <div class="product-shop">
+                <div class="f-fix">
+                    <?php $_productNameStripped = $this->stripTags($_product->getName(), null, true); ?>
+                    <h2 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $_productNameStripped; ?>"><?php echo $_product->getName(); ?></a></h2>
+                    <?php if($_product->getRatingSummary()): ?>
+                        <?php echo $this->getReviewsSummaryHtml($_product) ?>
+                    <?php endif; ?>
+                    <?php echo $this->getPriceHtml($_product, true) ?>
+                    <div style="clear: both;">
+                        <form name="unsubscribe" method="POST" action="<?php echo $this->getUrl('instocksubscribe/index/unsubscribe') ?>">
+                            <p><input type="submit" title="<?php echo $this->__('Unsubscribe') ?>" class="button btn-cart" value="<?php echo $this->__('Unsubscribe') ?>" /></p>
+                            <input type="hidden" name="sku" value="<?php echo $product->getSku(); ?>">
+                            <input type="hidden" name="email" value="<?php echo $product->getEmail(); ?>">
+                            <input type="hidden" name="id" value="<?php echo $product->getId(); ?>">
+                        </form>
+                    </div>
+                    <div class="desc std">
+                        <?php echo $_product->getShortDescription(); ?>
+                        <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $_productNameStripped ?>" class="link-learn"><?php echo $this->__('Learn More') ?></a>
+                    </div>
+                </div>
+            </div>
+        </li>
+    <?php } ?>
+    </ol>
+<?php echo $this->getPagerHtml(); ?>
