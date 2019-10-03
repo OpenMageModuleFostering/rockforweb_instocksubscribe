@@ -1,3 +1,5 @@
+
+
 ## Original Package Description
 
 This extension allow customers get notifications when product is IN STOCK again.

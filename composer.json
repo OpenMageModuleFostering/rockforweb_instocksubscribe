@@ -1,7 +1,7 @@
 {
-    "name": "OpenMageModuleFostering\/Rockforweb_Instocksubscribe",
+    "name": "openmage-module-fostering\/rockforweb_instocksubscribe",
     "type": "magento-module",
-    "license": "Open-Software-License-(OSL)",
+    "license": "OSL-3.0",
     "homepage": "",
     "description": "This extension allow customers get notifications when product is IN STOCK again.",
     "authors": [
